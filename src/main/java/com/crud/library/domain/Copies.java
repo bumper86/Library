@@ -11,19 +11,21 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "COPIES")
+@Entity
+@Table(name = "COPIES")
 public class Copies {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
     @Column(name = "ID")
     private long id;
-    @Column(name = "BOOK_ID")
-    private long bookId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "BOOK_ID")
+    private Book bookId;
     @Column(name = "STATUS")
     private String status;
 
-    public Copies(long bookId, String status) {
+    public Copies(Book bookId, String status) {
         this.bookId = bookId;
         this.status = status;
     }

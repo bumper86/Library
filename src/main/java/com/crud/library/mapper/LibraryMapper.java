@@ -39,6 +39,6 @@ public class LibraryMapper {
     }
 
     public RentalDto mapToRentalDto(final Rental rent) {
-        return new RentalDto(rent.getUserId(), rent.getCopiesId(), rent.getRentDate(), rent.getReturnDate());
+        return new RentalDto(rent.getUser(), rent.getCopies(), rent.getRentDate(), rent.getReturnDate());
     }
 }

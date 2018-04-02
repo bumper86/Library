@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/library")
+@RequestMapping("/v1/")
 public class LibraryControler {
     @Autowired
     private DbService service;

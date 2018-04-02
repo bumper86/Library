@@ -8,12 +8,11 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class RentalDto {
-    private long copiesId;
-    private long userId;
+    private User userId;
+    private Copies copiesId;
     private LocalDateTime rentDate;
     private  LocalDateTime returnDate;
 }

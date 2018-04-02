@@ -5,18 +5,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "RENTAL")
 public class Rental {
-    @Column(name = "COPIES_ID")
-    private long copiesId;
-    @Column(name = "USER_ID")
-    private long userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @NotNull
+    @Column(name = "ID", unique = true)
+    private long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "COPIES_ID")
+    private Copies copies;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
+    private User user;
     @Column(name = "RENT_DATE")
     private LocalDateTime rentDate;
     @Column(name = "RETURN_DATE")

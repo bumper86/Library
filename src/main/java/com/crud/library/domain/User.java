@@ -9,11 +9,13 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "USER")
+@Entity
+@Table(name = "USER")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,6 +31,10 @@ public class User {
 
     @Column(name = "SIGN_UP_DATE")
     private LocalDateTime signUpDate;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<Rental> rentals;
+
 
     public User(String username, String lastname) {
         this.username = username;

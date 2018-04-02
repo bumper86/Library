@@ -9,11 +9,13 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "BOOKS")
+@Entity
+@Table(name = "BOOKS")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,6 +31,9 @@ public class Book {
 
     @Column(name = "PUBLICATION_YEAR")
     private LocalDateTime publicationYear;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bookId")
+    private Set<Copies> copies;
 
     public Book(String title, String author, LocalDateTime publicationYear) {
         this.title = title;
