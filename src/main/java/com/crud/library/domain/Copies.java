@@ -16,17 +16,17 @@ import javax.validation.constraints.NotNull;
 public class Copies {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull
     @Column(name = "ID")
     private long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOOK_ID")
-    private Book bookId;
+    private Book book;
     @Column(name = "STATUS")
     private String status;
 
-    public Copies(Book bookId, String status) {
-        this.bookId = bookId;
+
+    public Copies(Book book, String status) {
+        this.book = book;
         this.status = status;
     }
 }

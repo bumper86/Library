@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull
     @Column(name = "ID", unique = true)
     private long id;
     @ManyToOne(fetch = FetchType.LAZY)

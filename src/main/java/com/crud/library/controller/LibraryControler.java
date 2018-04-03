@@ -1,5 +1,6 @@
 package com.crud.library.controller;
 
+import com.crud.library.Java8DateTimeConfiguration;
 import com.crud.library.domain.*;
 import com.crud.library.mapper.LibraryMapper;
 
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/")
 public class LibraryControler {
+    @Autowired
+    Java8DateTimeConfiguration java8DateTimeConfiguration;
     @Autowired
     private DbService service;
     @Autowired

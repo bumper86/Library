@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RentalDto {
+    private Long id;
     private User userId;
     private Copies copiesId;
     private LocalDateTime rentDate;

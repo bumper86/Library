@@ -21,7 +21,7 @@ public class LibraryMapper {
     }
 
     public BookDto mapToBookDto(final Book book) {
-        return new BookDto(book.getTitle(), book.getAuthor(), book.getPublicationYear());
+        return new BookDto(book.getId(),book.getTitle(), book.getAuthor(), book.getPublicationYear());
     }
 
     public Copies mapToCopies(final CopiesDto copiesDto) {
@@ -29,16 +29,16 @@ public class LibraryMapper {
     }
 
     public CopiesDto mapToCopiesDto(final Copies copies) {
-        return new CopiesDto(copies.getId(), copies.getBookId(), copies.getStatus());
+        return new CopiesDto(copies.getId(), copies.getBook(), copies.getStatus());
     }
 
     public List<CopiesDto> mapToCopiesList(final List<Copies> copiesList) {
         return copiesList.stream()
-                .map(e -> new CopiesDto(e.getId(), e.getBookId(), e.getStatus()))
+                .map(e -> new CopiesDto(e.getId(), e.getBook(), e.getStatus()))
                 .collect(Collectors.toList());
     }
 
     public RentalDto mapToRentalDto(final Rental rent) {
-        return new RentalDto(rent.getUser(), rent.getCopies(), rent.getRentDate(), rent.getReturnDate());
+        return new RentalDto(rent.getId(),rent.getUser(), rent.getCopies(), rent.getRentDate(), rent.getReturnDate());
     }
 }

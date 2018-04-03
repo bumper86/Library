@@ -1,5 +1,6 @@
 package com.crud.library.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,20 +20,20 @@ import java.util.Set;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull
     @Column(name = "ID")
     private long id;
 
-    @Column(name = "TITLE")
+    @Column(name = "TITLE", unique = true)
     private String title;
 
     @Column(name = "AUTHOR")
     private  String author;
 
     @Column(name = "PUBLICATION_YEAR")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime publicationYear;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bookId")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
     private Set<Copies> copies;
 
     public Book(String title, String author, LocalDateTime publicationYear) {

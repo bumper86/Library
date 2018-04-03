@@ -9,8 +9,16 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
+
 public class UserDto {
+    private Long id;
     private String username;
     private String lastname;
+    private LocalDateTime signUpDate;
+
+    public UserDto(String username, String lastname) {
+        this.username = username;
+        this.lastname = lastname;
+        this.signUpDate = LocalDateTime.now();
+    }
 }
