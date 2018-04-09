@@ -31,14 +31,15 @@ public class Book {
 
     @Column(name = "PUBLICATION_YEAR")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime publicationYear;
+    private Integer publicationYear;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
     private Set<Copies> copies;
 
-    public Book(String title, String author, LocalDateTime publicationYear) {
+    public Book(String title, String author, Integer publicationYear, Set<Copies> copies) {
         this.title = title;
         this.author = author;
         this.publicationYear = publicationYear;
+        this.copies = copies;
     }
 }

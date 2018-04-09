@@ -4,9 +4,13 @@ import com.crud.library.Java8DateTimeConfiguration;
 import com.crud.library.domain.*;
 import com.crud.library.mapper.LibraryMapper;
 
+import com.crud.library.repository.BookDao;
 import com.crud.library.service.DbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/")
@@ -39,8 +43,10 @@ public class LibraryControler {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getCopies")
-    public Long getCopies(@RequestParam long bookId) throws TaskNotFoundException {
-        return service.getAllAvialableCopies(bookId);
+   /* public BigDecimal getCopies(@RequestParam long bookId) throws TaskNotFoundException {
+        return service.getAllAvialableCopies(bookId);*/
+   public List<CopiesDto> getCopies() {
+       return libraryMapper.mapToCopiesList(service.getAllCopies());
     }
 /*
     @RequestMapping(method = RequestMethod.POST, value = "rentBook")

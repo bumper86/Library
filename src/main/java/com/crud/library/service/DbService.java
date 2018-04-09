@@ -5,6 +5,7 @@ import com.crud.library.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 @Service
 public class DbService {
@@ -38,7 +39,12 @@ public class DbService {
 
     //Book
     public Book saveBook(final Book book) {
-        return bookRepository.save(book);
+        saveCopies(new Copies(book, "free"));
+        if (bookRepository.findByAuthorAndTitle(book.getAuthor(), book.getTitle()).isPresent()) {
+            return null;
+        } else {
+            return bookRepository.save(book);
+        }
     }
 
     public List<Book> getAllBook() {
@@ -58,16 +64,19 @@ public class DbService {
         return copiesRepository.save(copies);
     }
 
+    public List<Copies> getAllCopies() {
+        return copiesRepository.findAll();
+    }
 
-    public List<Copies> getCopies(final long id) {
-        return copiesRepository.findCopiesByBookId(id);
+    public Copies getCopies(final Long id) {
+        return copiesRepository.findById(id).orElse(null);
     }
 
     public void deleteCopies(final Copies copies) {
         copiesRepository.delete(copies);
     }
 
-    public Long getAllAvialableCopies(final Long bookId) {
+    public BigDecimal getAllAvialableCopies(final Long bookId) {
         return bookDao.getAllAvialableCopies(bookId);
     }
 
@@ -87,4 +96,5 @@ public class DbService {
     public RentalDto update(final Long bookId) {
         return bookDao.returnBorrowedBook(bookId);
     }
+
 }

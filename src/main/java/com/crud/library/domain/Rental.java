@@ -20,10 +20,10 @@ public class Rental {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", unique = true)
     private long id;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "COPIES_ID")
     private Copies copies;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
     @Column(name = "RENT_DATE")

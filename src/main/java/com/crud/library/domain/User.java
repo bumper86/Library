@@ -30,7 +30,7 @@ public class User {
     @Column(name = "SIGN_UP_DATE")
     private LocalDateTime signUpDate;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Rental> rentals;
 
 
