@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,11 +46,12 @@ public class DbService {
     public Book saveBook(final Book book) {
         Optional<Book> optionalBook = bookRepository.findByAuthorAndTitleAndPublicationYear(
                 book.getAuthor(), book.getTitle(), book.getPublicationYear());
+        Book book1 = optionalBook.get();
         if (optionalBook.isPresent()) {
-            Book book1 = optionalBook.get();
             saveCopies(new Copies(book1, FREE));
             return book1;
         } else {
+            saveCopies(new Copies(book1, FREE));
             return bookRepository.save(book);
         }
     }
@@ -88,7 +90,7 @@ public class DbService {
         copiesRepository.delete(copies);
     }
 
-    public BigDecimal getAllAvialableCopies(final Long bookId) {
+    public BigInteger getAllAvialableCopies(final Long bookId) {
         return bookDao.getAllAvialableCopies(bookId);
     }
 

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,37 +35,44 @@ public class LibraryControler {
         return libraryMapper.mapToBookDto(service.saveBook(libraryMapper.mapToBook(bookDto)));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "addCopies")
-    public CopiesDto addCopies(@RequestBody CopiesDto copiesDto) {
-        return libraryMapper.mapToCopiesDto(service.saveCopies(libraryMapper.mapToCopies(copiesDto)));
-    }
-
-    @RequestMapping(method = RequestMethod.PUT, value = "updateCopies")
-    public CopiesDto updateCopies(@RequestBody CopiesDto copiesDto) {
-        return libraryMapper.mapToCopiesDto(service.saveCopies(libraryMapper.mapToCopies(copiesDto)));
-    }
-
     @RequestMapping(method = RequestMethod.GET, value = "getFreeCopies")
-   public BigDecimal getCopies(@RequestParam long bookId) throws TaskNotFoundException {
+    public BigInteger getCopies(@RequestParam Long bookId) {
         return service.getAllAvialableCopies(bookId);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "rentBook")
+    /*@RequestMapping(method = RequestMethod.POST, value = "rentBook")
     public RentalDto rentBook(@RequestBody RentalDto rentalDto) {
         Copies copies = rentalDto.getCopies();
-        BigDecimal avialableBook = service.getAllAvialableCopies(copies.getBook().getId());
+        BigInteger avialableBook = service.getAllAvialableCopies(copies.getBook().getId());
         if (avialableBook.equals(BigDecimal.ZERO)) {
             copies.setStatus(BORROWED);
             service.saveCopies(copies);
             return libraryMapper.mapToRentalDto(service.save(libraryMapper.mapToRental(rentalDto)));
         } else
             return null;
+    }*/
+
+    @RequestMapping(method = RequestMethod.POST, value = "rentBook")
+    public RentalDto rentBook(@RequestBody RentBook rentalDto) {
+        Copies copies = service.getCopies(rentalDto.getCopiesId());
+        User user = service.getUser(rentalDto.getUserId());
+        BigInteger avialableBook = service.getAllAvialableCopies(copies.getBook().getId());
+        if (!avialableBook.equals(BigDecimal.ZERO)) {
+            copies.setStatus(BORROWED);
+            service.saveCopies(copies);
+            Rental rental = new Rental(copies, user, rentalDto.getRentDate(), rentalDto.getReturnDate());
+            return libraryMapper.mapToRentalDto(service.save(rental));
+        } else
+            return null;
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "returnBook")
-    public RentalDto returnBook(@PathVariable Long rentId) {
+    public RentalDto returnBook(@RequestParam Long rentId) {
         Rental findRent = service.getBookrent(rentId);
         findRent.setReturnDate(LocalDateTime.now());
+        Copies copies = findRent.getCopies();
+        copies.setStatus("free");
+        service.saveCopies(copies);
         return libraryMapper.mapToRentalDto(service.save(findRent));
     }
 }

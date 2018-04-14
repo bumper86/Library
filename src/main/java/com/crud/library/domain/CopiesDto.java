@@ -9,10 +9,14 @@ import java.util.Set;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class CopiesDto {
-   // private long Id;
+    private Long Id;
     private Book book;
     private String status;
     private Set<Rental> rentals;
+
+    public CopiesDto(Book book, String status) {
+        this.book = book;
+        this.status = status;
+    }
 }

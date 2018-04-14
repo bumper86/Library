@@ -41,12 +41,12 @@ public class LibraryMapper {
     }
 
     public CopiesDto mapToCopiesDto(final Copies copies) {
-        return new CopiesDto(copies.getBook(), copies.getStatus(),null);
+        return new CopiesDto(copies.getBook(), copies.getStatus());
     }
 
     public List<CopiesDto> mapToCopiesList(final List<Copies> copiesList) {
         return copiesList.stream()
-                .map(e -> new CopiesDto(e.getBook(), e.getStatus(), null))
+                .map(e -> new CopiesDto(e.getBook(), e.getStatus()))
                 .collect(Collectors.toList());
     }
 
