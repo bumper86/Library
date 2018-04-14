@@ -23,7 +23,7 @@ public class LibraryMapper {
     }
 
     public Book mapToBook(final BookDto bookDto) {
-        return new Book(bookDto.getTitle(), bookDto.getAuthor(), bookDto.getPublicationYear(), null);
+        return new Book(bookDto.getTitle(), bookDto.getAuthor(), bookDto.getPublicationYear());
     }
 
     public BookDto mapToBookDto(final Book book) {

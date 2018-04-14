@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class DbService {
     @Autowired
@@ -30,7 +32,8 @@ public class DbService {
     }
 
     public User getUser(final long id) {
-        return userRepository.findById(id).orElse(null);
+       return userRepository.findById(id).orElse(null);
+     //   return  userRepository.findById(id);
     }
 
     public void delete(final User user) {
@@ -39,9 +42,13 @@ public class DbService {
 
     //Book
     public Book saveBook(final Book book) {
-        saveCopies(new Copies(book, "free"));
-        if (bookRepository.findByAuthorAndTitle(book.getAuthor(), book.getTitle()).isPresent()) {
-            return null;
+        Optional<Book> optionalBook = bookRepository.findByAuthorAndTitleAndPublicationYear(
+                book.getAuthor(), book.getTitle(), book.getPublicationYear());
+        if (optionalBook.isPresent()) {
+            Book book1 = optionalBook.get();
+            book.setCopies();
+            saveCopies(new Copies(book1, "free"));
+            return book1;
         } else {
             return bookRepository.save(book);
         }
@@ -69,7 +76,7 @@ public class DbService {
     }
 
     public Copies getCopies(final Long id) {
-        return copiesRepository.findById(id).orElse(null);
+        return copiesRepository.findByBook_Id(id).orElse(null);
     }
 
     public void deleteCopies(final Copies copies) {

@@ -19,7 +19,7 @@ public class Copies {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Long id;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "BOOK_ID")
     private Book book;
     @Column(name = "STATUS")

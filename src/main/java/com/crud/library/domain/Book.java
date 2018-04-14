@@ -16,30 +16,29 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "BOOKS")
+@Table(name = "BOOKS",
+   uniqueConstraints = {@UniqueConstraint(columnNames = {"TITLE","AUTHOR", "PUBLICATION_YEAR"})})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
-    private long id;
+    private Long id;
 
-    @Column(name = "TITLE", unique = true)
+    @Column(name = "TITLE")
     private String title;
 
     @Column(name = "AUTHOR")
     private  String author;
 
     @Column(name = "PUBLICATION_YEAR")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Integer publicationYear;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
     private Set<Copies> copies;
 
-    public Book(String title, String author, Integer publicationYear, Set<Copies> copies) {
+    public Book(String title, String author, Integer publicationYear) {
         this.title = title;
         this.author = author;
         this.publicationYear = publicationYear;
-        this.copies = copies;
     }
 }

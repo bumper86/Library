@@ -16,11 +16,7 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     @Override
     List<Book> findAll();
 
-    Optional<Book> findByAuthorAndTitle(String author, String title);
-
-    String findByAuthor(String author);
-
-    String findByTitle(String title);
+    Optional<Book> findByAuthorAndTitleAndPublicationYear(String author, String title, Integer publicationYear);
 
     Optional<Book> findById(long id);
 

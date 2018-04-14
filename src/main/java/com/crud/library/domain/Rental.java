@@ -19,7 +19,7 @@ public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", unique = true)
-    private long id;
+    private Long id;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "COPIES_ID")
     private Copies copies;
