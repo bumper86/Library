@@ -21,8 +21,6 @@ public class DbService {
     private RentalRepository rentalRepository;
     @Autowired
     private CopiesRepository copiesRepository;
-    @Autowired
-    private BookDao bookDao;
 
     //User
     public User save(final User user) {
@@ -90,8 +88,8 @@ public class DbService {
         copiesRepository.delete(copies);
     }
 
-    public BigInteger getAllAvialableCopies(final Long bookId) {
-        return bookDao.getAllAvialableCopies(bookId);
+    public Long getAllAvialableCopies(final Long bookId) {
+        return copiesRepository.countByStatusAndBook_Id("free", bookId);
     }
 
     //Rent
@@ -107,8 +105,8 @@ public class DbService {
         rentalRepository.delete(rental);
     }
 
-    public RentalDto update(final Long bookId) {
-        return bookDao.returnBorrowedBook(bookId);
+    public Rental update(final Long bookId) {
+        return rentalRepository.findByCopiesIdAndAndReturnDate(bookId, null);
     }
 
 }

@@ -4,15 +4,13 @@ import com.crud.library.Java8DateTimeConfiguration;
 import com.crud.library.domain.*;
 import com.crud.library.mapper.LibraryMapper;
 
-import com.crud.library.repository.BookDao;
 import com.crud.library.service.DbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/v1/")
@@ -36,7 +34,7 @@ public class LibraryControler {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getFreeCopies")
-    public BigInteger getCopies(@RequestParam Long bookId) {
+    public Long getCopies(@RequestParam Long bookId) {
         return service.getAllAvialableCopies(bookId);
     }
 
@@ -56,7 +54,7 @@ public class LibraryControler {
     public RentalDto rentBook(@RequestBody RentBook rentalDto) {
         Copies copies = service.getCopies(rentalDto.getCopiesId());
         User user = service.getUser(rentalDto.getUserId());
-        BigInteger avialableBook = service.getAllAvialableCopies(copies.getBook().getId());
+        Long avialableBook = service.getAllAvialableCopies(copies.getBook().getId());
         if (!avialableBook.equals(BigDecimal.ZERO)) {
             copies.setStatus(BORROWED);
             service.saveCopies(copies);
@@ -68,7 +66,7 @@ public class LibraryControler {
 
     @RequestMapping(method = RequestMethod.PUT, value = "returnBook")
     public RentalDto returnBook(@RequestParam Long rentId) {
-        Rental findRent = service.getBookrent(rentId);
+        Rental findRent = service.update(rentId);
         findRent.setReturnDate(LocalDateTime.now());
         Copies copies = findRent.getCopies();
         copies.setStatus("free");
