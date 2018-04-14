@@ -14,20 +14,14 @@ import java.util.Set;
 @Repository
 public interface CopiesRepository extends CrudRepository<Copies, Long> {
     @Override
-    List<Copies> save(List<Copies> copies);
+    Copies save(Copies copies);
 
-    @Override
-    <Copies extends T> Iterable<Copies> save(Iterable<Copies> entities);
-
-    @Override
+   @Override
     List<Copies> findAll();
 
 
     Optional<Copies> findByBook_Id(Long id);
 
-
-
-    @Override
-    void delete(Copies copies);
+    void deleteByBook_Id(Long bookId);
 
 }

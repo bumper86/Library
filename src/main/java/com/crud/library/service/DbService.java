@@ -46,7 +46,6 @@ public class DbService {
                 book.getAuthor(), book.getTitle(), book.getPublicationYear());
         if (optionalBook.isPresent()) {
             Book book1 = optionalBook.get();
-            book.setCopies();
             saveCopies(new Copies(book1, "free"));
             return book1;
         } else {
@@ -63,6 +62,7 @@ public class DbService {
     }
 
     public void deleteBook(final Book book) {
+        copiesRepository.deleteByBook_Id(book.getId());
         bookRepository.delete(book);
     }
 

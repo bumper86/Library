@@ -12,14 +12,14 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Entity(name = "copies")
 @Table(name = "COPIES")
 public class Copies {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Long id;
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+//    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "BOOK_ID")
     private Book book;
     @Column(name = "STATUS")
