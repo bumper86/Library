@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/")
 public class LibraryControler {
+    private static String BORROWED = "borrowed";
     @Autowired
     Java8DateTimeConfiguration java8DateTimeConfiguration;
     @Autowired
@@ -42,23 +44,27 @@ public class LibraryControler {
         return libraryMapper.mapToCopiesDto(service.saveCopies(libraryMapper.mapToCopies(copiesDto)));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "getCopies")
-   /* public BigDecimal getCopies(@RequestParam long bookId) throws TaskNotFoundException {
-        return service.getAllAvialableCopies(bookId);*/
-   public List<CopiesDto> getCopies() {
-       return libraryMapper.mapToCopiesList(service.getAllCopies());
+    @RequestMapping(method = RequestMethod.GET, value = "getFreeCopies")
+   public BigDecimal getCopies(@RequestParam long bookId) throws TaskNotFoundException {
+        return service.getAllAvialableCopies(bookId);
     }
-/*
+
     @RequestMapping(method = RequestMethod.POST, value = "rentBook")
     public RentalDto rentBook(@RequestBody RentalDto rentalDto) {
-        Copies copies = rentalDto.;
+        Copies copies = rentalDto.getCopies();
+        BigDecimal avialableBook = service.getAllAvialableCopies(copies.getBook().getId());
+        if (avialableBook.equals(BigDecimal.ZERO)) {
+            copies.setStatus(BORROWED);
+            service.saveCopies(copies);
+            return libraryMapper.mapToRentalDto(service.save(libraryMapper.mapToRental(rentalDto)));
+        } else
+            return null;
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "returnBook")
-    public RentalDto returnBook(Long copiesId) {
-        Rental findRent = rentalRepository.findById(copiesId);
+    public RentalDto returnBook(@PathVariable Long rentId) {
+        Rental findRent = service.getBookrent(rentId);
         findRent.setReturnDate(LocalDateTime.now());
-        return libraryMapper.mapToRentalDto(rentalRepository.save(findRent));
+        return libraryMapper.mapToRentalDto(service.save(findRent));
     }
-    */
 }

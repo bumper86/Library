@@ -50,7 +50,7 @@ public class UserDtoTest {
     @Test
     public void testBookSave() {
         //Given
-        Book book = new Book("Test44", "test3232", 2010);
+        Book book = new Book("Test4554", "test325532", 2010);
         Set<Copies> books = new HashSet<>();
         books.add(new Copies(book,"free"));
         book.setCopies(books);
@@ -62,7 +62,7 @@ public class UserDtoTest {
 
 
         //CleanUp
-        dbService.deleteBook(book);
+       // dbService.deleteBook(book);
     }
 
 }

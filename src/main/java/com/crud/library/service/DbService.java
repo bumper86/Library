@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 public class DbService {
+    private static String FREE = "free";
     @Autowired
     private BookRepository bookRepository;
     @Autowired
@@ -46,7 +47,7 @@ public class DbService {
                 book.getAuthor(), book.getTitle(), book.getPublicationYear());
         if (optionalBook.isPresent()) {
             Book book1 = optionalBook.get();
-            saveCopies(new Copies(book1, "free"));
+            saveCopies(new Copies(book1, FREE));
             return book1;
         } else {
             return bookRepository.save(book);
@@ -62,7 +63,11 @@ public class DbService {
     }
 
     public void deleteBook(final Book book) {
-        copiesRepository.deleteByBook_Id(book.getId());
+        List<Copies> optionalCopies = copiesRepository.findByBook_Id(book.getId());
+        for (Copies copies:optionalCopies) {
+            copiesRepository.delete(copies);
+
+        }
         bookRepository.delete(book);
     }
 
@@ -76,7 +81,7 @@ public class DbService {
     }
 
     public Copies getCopies(final Long id) {
-        return copiesRepository.findByBook_Id(id).orElse(null);
+        return copiesRepository.findById(id).orElse(null);
     }
 
     public void deleteCopies(final Copies copies) {

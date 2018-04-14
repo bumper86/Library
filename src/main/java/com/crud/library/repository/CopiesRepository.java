@@ -19,9 +19,11 @@ public interface CopiesRepository extends CrudRepository<Copies, Long> {
    @Override
     List<Copies> findAll();
 
+   Optional<Copies> findById(Long id);
 
-    Optional<Copies> findByBook_Id(Long id);
 
-    void deleteByBook_Id(Long bookId);
+    List<Copies> findByBook_Id(Long bookId);
+
+    void delete(Long Id);
 
 }

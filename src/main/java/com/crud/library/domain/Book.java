@@ -34,7 +34,7 @@ public class Book {
     private Integer publicationYear;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Copies> copies;
+     private Set<Copies> copies;
 
     public Book(String title, String author, Integer publicationYear) {
         this.title = title;
