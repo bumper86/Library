@@ -23,7 +23,7 @@ public class DbService {
     private CopiesRepository copiesRepository;
 
     //User
-    public User save(final User user) {
+    public User saveUser(final User user) {
         return userRepository.save(user);
     }
 
@@ -33,7 +33,6 @@ public class DbService {
 
     public User getUser(final long id) {
        return userRepository.findById(id).orElse(null);
-     //   return  userRepository.findById(id);
     }
 
     public void delete(final User user) {
@@ -84,6 +83,10 @@ public class DbService {
         return copiesRepository.findById(id).orElse(null);
     }
 
+    public Copies getCopiesByBook(final String author, final String title) {
+        return copiesRepository.findByBook_AuthorAndBook_Title(author,title).orElse(null);
+    }
+
     public void deleteCopies(final Copies copies) {
         copiesRepository.delete(copies);
     }
@@ -93,19 +96,19 @@ public class DbService {
     }
 
     //Rent
-    public Rental getBookrent(final Long id) {
+    public Rental getBookRent(final Long id) {
         return rentalRepository.findById(id).orElse(null);
     }
 
-    public Rental save (final Rental rental) {
+    public Rental saveBookRent (final Rental rental) {
         return rentalRepository.save(rental);
     }
 
-    public void delete(final Rental rental) {
+    public void deleteRent(final Rental rental) {
         rentalRepository.delete(rental);
     }
 
-    public Rental update(final Long bookId) {
+    public Rental getRentByCopiesId(final Long bookId) {
         return rentalRepository.findByCopiesIdAndAndReturnDate(bookId, null);
     }
 

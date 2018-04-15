@@ -23,6 +23,8 @@ public interface CopiesRepository extends CrudRepository<Copies, Long> {
 
    Optional<Copies> findById(Long id);
 
+   Optional<Copies> findByBook_AuthorAndBook_Title(String author, String title);
+
 
     List<Copies> findByBook_Id(Long bookId);
 

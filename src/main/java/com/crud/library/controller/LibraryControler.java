@@ -25,7 +25,7 @@ public class LibraryControler {
 
     @RequestMapping(method = RequestMethod.POST, value = "addUser")
     public UserDto addUser(@RequestBody UserDto userDto){
-        return libraryMapper.mapToUserDto(service.save(libraryMapper.mapToUser(userDto)));
+        return libraryMapper.mapToUserDto(service.saveUser(libraryMapper.mapToUser(userDto)));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "addBook")
@@ -38,39 +38,27 @@ public class LibraryControler {
         return service.getAllAvialableCopies(bookId);
     }
 
-    /*@RequestMapping(method = RequestMethod.POST, value = "rentBook")
-    public RentalDto rentBook(@RequestBody RentalDto rentalDto) {
-        Copies copies = rentalDto.getCopies();
-        BigInteger avialableBook = service.getAllAvialableCopies(copies.getBook().getId());
-        if (avialableBook.equals(BigDecimal.ZERO)) {
-            copies.setStatus(BORROWED);
-            service.saveCopies(copies);
-            return libraryMapper.mapToRentalDto(service.save(libraryMapper.mapToRental(rentalDto)));
-        } else
-            return null;
-    }*/
-
-    @RequestMapping(method = RequestMethod.POST, value = "rentBook")
+        @RequestMapping(method = RequestMethod.POST, value = "rentBook")
     public RentalDto rentBook(@RequestBody RentBook rentalDto) {
-        Copies copies = service.getCopies(rentalDto.getCopiesId());
+        Copies copies = service.getCopiesByBook(rentalDto.getAuthor(), rentalDto.getTitle());
         User user = service.getUser(rentalDto.getUserId());
         Long avialableBook = service.getAllAvialableCopies(copies.getBook().getId());
-        if (!avialableBook.equals(BigDecimal.ZERO)) {
+        if (!avialableBook.equals(0)) {
             copies.setStatus(BORROWED);
             service.saveCopies(copies);
-            Rental rental = new Rental(copies, user, rentalDto.getRentDate(), rentalDto.getReturnDate());
-            return libraryMapper.mapToRentalDto(service.save(rental));
+            Rental rental = new Rental(copies, user, LocalDateTime.now(), null);
+            return libraryMapper.mapToRentalDto(service.saveBookRent(rental));
         } else
             return null;
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "returnBook")
     public RentalDto returnBook(@RequestParam Long rentId) {
-        Rental findRent = service.update(rentId);
+        Rental findRent = service.getRentByCopiesId(rentId);
         findRent.setReturnDate(LocalDateTime.now());
         Copies copies = findRent.getCopies();
         copies.setStatus("free");
         service.saveCopies(copies);
-        return libraryMapper.mapToRentalDto(service.save(findRent));
+        return libraryMapper.mapToRentalDto(service.saveBookRent(findRent));
     }
 }
