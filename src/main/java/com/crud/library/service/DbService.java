@@ -27,7 +27,7 @@ public class DbService {
         return userRepository.save(user);
     }
 
-    public List<User> getAllUser() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
@@ -35,8 +35,8 @@ public class DbService {
        return userRepository.findById(id).orElse(null);
     }
 
-    public void delete(final User user) {
-        userRepository.delete(user);
+    public void deleteUser(final Long id) {
+        userRepository.deleteById(id);
     }
 
     //Book
@@ -57,17 +57,19 @@ public class DbService {
         return bookRepository.findAll();
     }
 
+    public List<Book> getBooksByAuthor(final String author) {return bookRepository.findAllByAuthor(author);}
+
     public Book getBook(final long id) {
         return bookRepository.findById(id).orElse(null);
     }
 
-    public void deleteBook(final Book book) {
-        List<Copies> optionalCopies = copiesRepository.findByBook_Id(book.getId());
+    public void deleteBook(final Long idBook) {
+        List<Copies> optionalCopies = copiesRepository.findByBook_Id(idBook);
         for (Copies copies:optionalCopies) {
             copiesRepository.delete(copies);
 
         }
-        bookRepository.delete(book);
+        bookRepository.deleteById(idBook);
     }
 
     //Copies
